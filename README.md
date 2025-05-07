@@ -178,7 +178,7 @@ For team-wide changes, propose via PR and tag relevant maintainers.
 
 ---
 
-## �� Why Use AI IDE Rules?
+## Why Use AI IDE Rules?
 
 By aligning our tools with well-defined AI guidance, we:
 
