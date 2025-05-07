@@ -5,17 +5,19 @@ This repository contains standardized rule definitions for AI-powered IDEs such 
 We follow a **4-level hierarchy** of rules to enable scalable AI collaboration while allowing flexibility where needed.
 
 > See also:
+>
 > - [Rootstrap Tech Guides](https://github.com/rootstrap/tech-guides/tree/master)
 
 ---
 
 ## Repository Structure
 
+```
 global/
   └── base-rules.mdc
 react/
   └── base-rules.mdc
-  └── folder/   
+  └── folder/
   |   └── language-rules.mdc
 react-native/
   └── ...
@@ -24,6 +26,7 @@ ruby/
 swift/
   └── ...
 ---
+```
 
 ## 1. A Hierarchy of Rules
 
@@ -31,18 +34,19 @@ We define rules across **four levels** for clarity, control, and override logic:
 
 ### 1.1 Global (Team-Wide)
 
-**Purpose:**
-Enforce universal coding norms and AI behavior across all Rootstrap projects.
+**Purpose:** Enforce universal coding norms and AI behavior across all Rootstrap projects.
 
 **Path:**
+
 - Cursor: `.cursor/rules/global/base.rules.mdc`
 - Windsurf: (Mirror global setup where applicable)
 
 **Commit:** Yes
 
 **Examples:**
+
 - **Agent Persona:**
-  - *You are an expert AI software engineer focused on scalable and maintainable systems in React/TypeScript.*
+  - _You are an expert AI software engineer focused on scalable and maintainable systems in React/TypeScript._
   - Always modularize long functions/files.
   - Don’t refactor existing code without prompting.
 - **Debugging Heuristics:**
@@ -53,19 +57,19 @@ Enforce universal coding norms and AI behavior across all Rootstrap projects.
 
 ### 1.2 Tech-Level (Language/Framework Specific)
 
-**Purpose:**  
-Tailor AI assistance to specific ecosystems (e.g., React, Rails, Python).
+**Purpose:** Tailor AI assistance to specific ecosystems (e.g., React, Rails, Python).
 
-**Path:**  
+**Path:**
+
 - Cursor: `.cursor/rules/{tech}/base.rules.mdc` (or tech-specific like `react.rules.mdc`)
 - Windsurf: Same structure mirrored as possible
 
-**Scoping:**
-If you have multiple techs on your repository try using the `automatically attach` config with correct `globs` so it only applies to the correct files.
+**Scoping:** If you have multiple techs on your repository try using the `automatically attach` config with correct `globs` so it only applies to the correct files.
 
 **Commit:** Yes
 
 **Examples:**
+
 - React component structure
 - Python file formatting
 - Rails naming conventions
@@ -74,17 +78,16 @@ If you have multiple techs on your repository try using the `automatically attac
 
 ### 1.3 Project-Specific
 
-**Purpose:**  
-Define rules for domain-specific constraints, module layout, naming conventions, or third-party API patterns.
+**Purpose:** Define rules for domain-specific constraints, module layout, naming conventions, or third-party API patterns.
 
-**Path:**  
+**Path:**
+
 - Cursor: `.cursor/rules/project/base.rules.mdc`
 - Windsurf: Project-level equivalent
 - Linters/CI config should complement these
 
-**Scoping:**
-Make use of the rule scoping config to restrict when the rule should be applied.
-It can be:
+**Scoping:** Make use of the rule scoping config to restrict when the rule should be applied. It can be:
+
 - `Always`
 - `Automatically Attached`: Here you specify `globs` (file name pattern matching)
 - `Agent Requested`: Specify a `description` to help the agent know when the rule should be attached.
@@ -95,6 +98,7 @@ Good scoping is crucial so you are not adding unnecessary context to the AI that
 **Commit:** Yes
 
 **Examples:**
+
 - Specific file naming in `services/api`
 - Preferred structure for `/useCases/` directory
 - Required typing strategy (e.g., strict types vs loose inference)
@@ -103,16 +107,17 @@ Good scoping is crucial so you are not adding unnecessary context to the AI that
 
 ### 1.4 Personal (Developer Preferences)
 
-**Purpose:**  
-Allow personal customizations that don’t interfere with shared rules (e.g., tab size, preferred AI styles).
+**Purpose:** Allow personal customizations that don’t interfere with shared rules (e.g., tab size, preferred AI styles).
 
-**Path:**  
+**Path:**
+
 - Cursor: `.cursorrc` or `.cursor/rules/private/some_rule_name.rules.mdc`
 - Windsurf: Per-user config files (location may vary)
 
 **Commit:** ❌ No (local-only)
 
 **Tips:**
+
 - Use `.cursorrc` to define personal keybindings, prompt styles, or AI personas.
 - Add `.cursor/rules/private` to `.gitignore` so everyone in your project can use that folder for private rules.
 - Never override `global`, `tech`, or `project` rules in your personal file.
@@ -121,17 +126,19 @@ Allow personal customizations that don’t interfere with shared rules (e.g., ta
 
 ## What to Commit to the Project Repository
 
-| File/Folder                         | Commit to Repo |
-|------------------------------------|----------------|
-| `.cursor/rules/global/*.mdc`       | ✅ Yes         |
-| `.cursor/rules/{tech}/*.mdc`       | ✅ Yes         |
-| `.cursor/rules/project/*.mdc`      | ✅ Yes         |
-| `.cursorrc`                        | ❌ No          |
-| `.cursor/rules/private/*`          | ❌ No          |
-| Windsurf equivalents        | ✅ Yes (if supported) |
+| File/Folder                   | Commit to Repo        |
+| ----------------------------- | --------------------- |
+| `.cursor/rules/global/*.mdc`  | ✅ Yes                |
+| `.cursor/rules/{tech}/*.mdc`  | ✅ Yes                |
+| `.cursor/rules/project/*.mdc` | ✅ Yes                |
+| `.cursorrc`                   | ❌ No                 |
+| `.cursor/rules/private/*`     | ❌ No                 |
+| Windsurf equivalents          | ✅ Yes (if supported) |
 
 **Tips:**
+
 - Create rule drafts as `private` and upgrade them to the correct folder once you have tested them out if they would be useful to the rest of your team
+
 ---
 
 ## Setting Up AI IDE Rules
@@ -141,8 +148,7 @@ Allow personal customizations that don’t interfere with shared rules (e.g., ta
 1. **Install [Cursor IDE](https://www.cursor.sh)**
 2. Open your project folder.
 3. Rules will be picked up automatically from `.cursor/rules/**`.
-4. You can manually reload them from the Cursor command palette:  
-   `⇧⌘P` → `Reload AI Rules`.
+4. You can manually reload them from the Cursor command palette: `⇧⌘P` → `Reload AI Rules`.
 
 ### Windsurf Setup
 
