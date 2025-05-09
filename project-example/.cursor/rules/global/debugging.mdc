@@ -1,0 +1,13 @@
+---
+description: Use when asked to debug an issue
+globs:
+alwaysApply: false
+---
+# Debugging
+- When asked to debug an issue or a bug, follow this sequence:
+  1. Reflect on 5-7 different possible sources of the problem.
+  2. Distill those down to 1-2 most likely sources.
+  3. Add additional logs to validate your assumptions and track data transformations.
+  4. Deeply reflect on what could be wrong and produce a comprehensive analysis.
+  5. Suggest additional logs if the issue persists or if the source is unclear.
+  6. Once a fix is implemented, ask for approval to remove the added logs.

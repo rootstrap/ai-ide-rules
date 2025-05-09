@@ -1,0 +1,66 @@
+---
+description:
+globs: *.tsx,*.ts
+alwaysApply: false
+---
+# Rules to follow when writing React code
+
+## General React conventions
+
+- Always write functional components over class components
+- Always use named exports over default exports
+- If the component accepts props, define component props above the component definition and use the component name as the prefix
+- Always destructure props inside the function body rather than inline
+- Name React component files using PascalCase
+- Ensure components are accessible following WCAG guidelines
+- Avoid useEffect when possible in favor of imperative function calls
+
+## Styling
+
+- Always use the `css` prop from `@emotion/core` for styling
+- If styles are needed, always add styles to a `styles` object at the bottom of the component file.
+- Avoid inline styling
+- Avoid passing dynamic content/variables into Emotion styles
+- Do not use Tailwind or Shadcn UI components
+- Always use `@lunchbox/snackpack";` components instead of native HTML elements whenever possible
+- Always use design `tokens` exported by `@lunchbox/snackpack` over hardcoding values:
+   - **Colors**: `tokens.colors`
+   - **Sizing and spacing**: `tokens.sizes`
+   - **Breakpoints**: `tokens.breakpoints`
+   - **Typography**: `tokens.(fornt|fontSize|fontWeight|fontFamily)`
+   - **Opacity**: `tokens.opacity`
+   - **Radius**: `tokens.radius`
+   - **Shadows**: `tokens.shadows`
+   - **Transitions**: `tokens.transitions`
+   - **Borders**: `tokens.borders`
+
+## Example component file
+
+```tsx
+// ExampleComponent.tsx
+
+import React from "react";
+import { Button, tokens } from "@brighwheel/snackpack"
+
+type ExampleComponentProps = {
+    description: string;
+}
+
+export const ExampleComponent = (props: ExampleComponentProps) => {
+    const { title } = props;
+
+    return (
+        <div css={styles.container}>
+            <Text>{description}</Text>
+            <Button onPress={console.log}>Log click</Button>
+        </div>
+    )
+}
+
+const styles = {
+    container: css`
+      padding: ${tokens.sizes[24]};
+      background: ${tokens.colors.barney};
+    `
+}
+```

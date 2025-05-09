@@ -2,37 +2,59 @@
 
 This repository contains standardized rule definitions for AI-powered IDEs such as **Cursor** and **Windsurf**, designed to ensure consistent, high-quality code assistance across all teams and projects at Rootstrap.
 
-We follow a **4-level hierarchy** of rules to enable scalable AI collaboration while allowing flexibility where needed.
-
 > See also:
 >
 > - [Rootstrap Tech Guides](https://github.com/rootstrap/tech-guides/tree/master)
 
+## Table of Contents
+
+- [1. Global and per Tech Rules](#1-global-and-per-tech-rules)
+- [2. Rule Hierarchy for your project](#2-rule-hierarchy-for-your-project)
+  - [2.1 Global (Team-Wide)](#21-global-team-wide)
+  - [2.2 Technology-Specific](#22-technology-specific)
+  - [2.3 Project-Specific](#23-project-specific)
+  - [2.4 User-Specific](#24-user-specific)
+- [3. What to Commit to the Project Repository](#3-what-to-commit-to-the-project-repository)
+- [4. Setting Up AI IDE Rules](#4-setting-up-ai-ide-rules)
+  - [4.1 Cursor Setup](#41-cursor-setup)
+  - [4.2 Windsurf Setup](#42-windsurf-setup)
+- [5. Contributing](#5-contributing)
+- [6. TODOs](#6-todos)
+- [7. Why Use AI IDE Rules?](#7-why-use-ai-ide-rules)
+
 ---
 
-## Repository Structure
+## 1. Global and per Tech Rules
+
+In the `rule-templates` folder you will find the following structure, check out the global rules as well as the ones related to the techs you are working on to get you started.
+
+This is also the recommended folder structure for your project inside the rules folder. For example for cursor that would be `.cursor/rules`.
+
+For an example of how this may look on a real project you can check out the [project-example](https://github.com/rootstrap/ai-ide-rules/tree/main/project-example) folder.
 
 ```
 global/
   └── base-rules.mdc
 react/
   └── base-rules.mdc
-  └── folder/
-  |   └── language-rules.mdc
+  └── components/
+  |   └── a11y-rules.mdc
 react-native/
   └── ...
 ruby/
   └── ...
 swift/
   └── ...
+private
+  └── ...
 ---
 ```
 
-## 1. A Hierarchy of Rules
+## 2. Rule Hierarchy for your project
 
 We define rules across **four levels** for clarity, control, and override logic:
 
-### 1.1 Global (Team-Wide)
+### 2.1 Global (Team-Wide)
 
 **Purpose:** Enforce universal coding norms and AI behavior across all Rootstrap projects.
 
@@ -55,7 +77,7 @@ We define rules across **four levels** for clarity, control, and override logic:
 
 ---
 
-### 1.2 Tech-Level (Language/Framework Specific)
+### 2.2 Tech-Level (Language/Framework Specific)
 
 **Purpose:** Tailor AI assistance to specific ecosystems (e.g., React, Rails, Python).
 
@@ -76,7 +98,7 @@ We define rules across **four levels** for clarity, control, and override logic:
 
 ---
 
-### 1.3 Project-Specific
+### 2.3 Project-Specific
 
 **Purpose:** Define rules for domain-specific constraints, module layout, naming conventions, or third-party API patterns.
 
@@ -105,7 +127,7 @@ Good scoping is crucial so you are not adding unnecessary context to the AI that
 
 ---
 
-### 1.4 Personal (Developer Preferences)
+### 2.4 Personal (Developer Preferences)
 
 **Purpose:** Allow personal customizations that don’t interfere with shared rules (e.g., tab size, preferred AI styles).
 
@@ -124,7 +146,7 @@ Good scoping is crucial so you are not adding unnecessary context to the AI that
 
 ---
 
-## What to Commit to the Project Repository
+## 3. What to Commit to the Project Repository
 
 | File/Folder                   | Commit to Repo        |
 | ----------------------------- | --------------------- |
@@ -141,16 +163,16 @@ Good scoping is crucial so you are not adding unnecessary context to the AI that
 
 ---
 
-## Setting Up AI IDE Rules
+## 4. Setting Up AI IDE Rules
 
-### Cursor Setup
+### 4.1 Cursor Setup
 
 1. **Install [Cursor IDE](https://www.cursor.sh)**
 2. Open your project folder.
 3. Rules will be picked up automatically from `.cursor/rules/**`.
 4. You can manually reload them from the Cursor command palette: `⇧⌘P` → `Reload AI Rules`.
 
-### Windsurf Setup
+### 4.2 Windsurf Setup
 
 1. Clone this repository into your project.
 2. Ensure Windsurf is pointed to `.windsurf/rules/**` or compatible config.
@@ -158,7 +180,7 @@ Good scoping is crucial so you are not adding unnecessary context to the AI that
 
 ---
 
-## Contributing
+## 5. Contributing
 
 When adding new rules:
 
@@ -171,14 +193,14 @@ For team-wide changes, propose via PR and tag relevant maintainers.
 
 ---
 
-## TODOs
+## 6. TODOs
 
 - Add Windsurf-specific mapping guide
 - Include a CI check to validate rule file syntax
 
 ---
 
-## Why Use AI IDE Rules?
+## 7. Why Use AI IDE Rules?
 
 By aligning our tools with well-defined AI guidance, we:
 

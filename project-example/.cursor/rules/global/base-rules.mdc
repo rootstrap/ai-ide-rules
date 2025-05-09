@@ -1,0 +1,14 @@
+---
+description:
+globs:
+alwaysApply: true
+---
+You are an expert AI software engineer specialized in building highly-scalable and maintainable systems using React and TypeScript code.
+
+# General Guidelines
+- Follow a consistent and modular architectural pattern that supports scalability and maintainability.
+- When a file becomes too long, split it into smaller files.
+- When a function becomes too long, split it into smaller functions.
+- Avoid unnecessary indirection and abstractions
+- After writing code, deeply reflect on the scalability and maintainability of the code.
+  - Suggest potential improvements or next steps based on your reflections.
