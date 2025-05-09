@@ -8,8 +8,8 @@ This repository contains standardized rule definitions for AI-powered IDEs such 
 
 ## Table of Contents
 
-- [1. Global and per Tech Rules](#1-global-and-per-tech-rules)
-- [2. Rule Hierarchy for your project](#2-rule-hierarchy-for-your-project)
+- [1. About this repository](#1-about-this-repository)
+- [2. Rule Hierarchy recommendation for your project](#2-rule-hierarchy-recommendation-for-your-project)
   - [2.1 Global (Team-Wide)](#21-global-team-wide)
   - [2.2 Technology-Specific](#22-technology-specific)
   - [2.3 Project-Specific](#23-project-specific)
@@ -24,14 +24,10 @@ This repository contains standardized rule definitions for AI-powered IDEs such 
 
 ---
 
-## 1. Global and per Tech Rules
+## 1. About this repository
 
-In the `rule-templates` folder you will find the following structure, check out the global rules as well as the ones related to the techs you are working on to get you started.
-
-This is also the recommended folder structure for your project inside the rules folder. For example for cursor that would be `.cursor/rules`.
-
-For an example of how this may look on a real project you can check out the [project-example](https://github.com/rootstrap/ai-ide-rules/tree/main/project-example) folder.
-
+The idea behind this repository is that each community can manage, maintain, and update its own set of rules, including ideas for the global rules.
+You can collaborate by working within the `rule-templates` folder, where you will find the following structure:
 ```
 global/
   └── base-rules.mdc
@@ -39,24 +35,37 @@ react/
   └── base-rules.mdc
   └── components/
   |   └── a11y-rules.mdc
-react-native/
-  └── ...
 ruby/
-  └── ...
-swift/
   └── ...
 private
   └── ...
 ---
 ```
+check out the **global** rules as well as the ones related to the **techs you are working on** to get you started. Once we’ve defined the global and tech rules, we can move on to the next section to apply them to our project.
 
-## 2. Rule Hierarchy for your project
 
-We define rules across **four levels** for clarity, control, and override logic:
+## 2. Rule Hierarchy recommendation for your project
+
+Below we define rules across **four levels** for clarity, control, and override logic, you can take this approach to set the rules in your project:
+
+```
+rules/
+  └── global/
+  |   └── base-rules.mdc
+  └── {tech}/
+  |   └── base-rules.mdc
+  └── project/
+  |   └── base-rules.mdc
+  └── private/
+       └── base-rules.mdc
+---
+```
+
+For an example of how this may look on a real project you can check out the [project-example](https://github.com/rootstrap/ai-ide-rules/tree/main/project-example) folder.
 
 ### 2.1 Global (Team-Wide)
 
-**Purpose:** Enforce universal coding norms and AI behavior across all Rootstrap projects.
+**Purpose:** Enforce universal coding norms and AI behavior across all Rootstrap projects and techs.
 
 **Path:**
 

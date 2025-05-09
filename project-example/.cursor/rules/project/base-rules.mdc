@@ -1,0 +1,14 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# Rules specific for this project
+
+- New features must be created inside the `src/modules/<feature-name>/` directory.
+- Each module should contain the following subfolders:
+  - `components/` – UI elements unique to this module.
+  - `hooks/` – Custom hooks for encapsulated logic.
+  - `services/` – API or domain logic specific to this module.
+  - `types/` – Module-specific TypeScript types or interfaces.
+- Common/shared components should go in `src/shared/`.
