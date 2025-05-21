@@ -1,0 +1,43 @@
+---
+description:
+globs: *.tsx
+alwaysApply: false
+---
+# React Accessibility Rules & Best Practices
+
+## 1. Semantic HTML
+- **Use semantic elements:** Prefer native HTML elements (`<button>`, `<nav>`, `<main>`, `<header>`, etc.) over generic `<div>` and `<span>` for structure and interactivity.
+- **Label elements:** Always provide labels for form controls using `<label>` or `aria-label`.
+
+## 2. ARIA Usage
+- **Use ARIA only when necessary:** Prefer native HTML semantics; use ARIA attributes (`aria-*`) to enhance accessibility only when native elements are insufficient.
+- **Role attributes:** Use `role` attributes to clarify the purpose of custom components.
+
+## 3. Keyboard Navigation
+- **Tab order:** Ensure all interactive elements are reachable and usable via keyboard (Tab, Shift+Tab, Enter, Space, Arrow keys).
+- **Focus management:** Use `tabIndex`, `autoFocus`, and programmatic focus (e.g., `ref.current.focus()`) to manage focus for dynamic content.
+- **Skip links:** Provide skip navigation links for users to bypass repetitive content.
+
+## 4. Accessible Forms
+- **Associate labels:** Use `<label htmlFor="id">` to associate labels with inputs.
+- **Error messages:** Announce form errors using ARIA live regions or semantic elements.
+- **Fieldset and legend:** Use `<fieldset>` and `<legend>` for grouping related form controls.
+
+## 5. Color & Contrast
+- **Sufficient contrast:** Ensure text and interactive elements have a contrast ratio of at least 4.5:1 against their background.
+- **Don't rely on color alone:** Use text, icons, or patterns in addition to color to convey information.
+
+## 6. Images & Media
+- **Alt text:** Provide descriptive `alt` attributes for images. Use empty `alt` for decorative images.
+- **Captions and transcripts:** Provide captions for video and transcripts for audio content.
+
+## 7. Live Regions & Announcements
+- **Use ARIA live regions:** Announce dynamic content changes (e.g., notifications, form errors) using `aria-live` attributes.
+
+## 9. Component Libraries
+- **Accessible by default:** Prefer component libraries with strong accessibility support (e.g., Material UI, Reach UI, Radix UI).
+- **Customize responsibly:** When customizing components, ensure accessibility is preserved.
+
+## 10. General
+- **Continuous learning:** Stay updated with [WCAG](mdc:https:/www.w3.org/WAI/standards-guidelines/wcag) and accessibility best practices.
+- **Empathy first:** Design and test for users with diverse abilities and assistive technologies.

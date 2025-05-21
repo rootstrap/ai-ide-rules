@@ -1,0 +1,46 @@
+---
+description:
+globs: *.tsx,*.ts
+alwaysApply: false
+---
+# TypeScript Best Practices for React
+
+## 1. Typing Components
+- **Use `FC`/`FunctionComponent` only for children:** Prefer explicit function signatures for components. Use `React.FC` only if you need the `children` prop.
+- **Type props and state:** Always define interfaces or types for component props and state.
+- **DefaultProps:** Prefer default parameter values over `defaultProps` in function components.
+
+## 2. Type Safety
+- **Prefer `interface` for objects, `type` for unions:** Use `interface` for object shapes and `type` for unions/intersections.
+- **Avoid `any`:** Use `unknown` or precise types instead of `any` to maintain type safety.
+- **Type assertions sparingly:** Use `as` only when you are certain about the type, and avoid overusing type assertions.
+
+## 3. Hooks
+- **Type custom hooks:** Always type the return value and arguments of custom hooks.
+- **Type event handlers:** Use React's built-in event types (e.g., `React.ChangeEvent<HTMLInputElement>`).
+
+## 4. Props & State
+- **Optional and default props:** Use `?` for optional props and provide sensible defaults.
+- **Readonly where possible:** Use `readonly` for props and state that should not be mutated.
+
+## 5. Generics
+- **Use generics for reusable components/hooks:** Make components and hooks generic when they need to work with multiple types.
+
+## 6. Enums & Literals
+- **Prefer union types over enums:** Use union string or number literals for simple cases instead of enums.
+
+## 7. Utility Types
+- **Leverage utility types:** Use built-in utility types like `Partial<T>`, `Pick<T, K>`, `Omit<T, K>`, and `Record<K, T>` to manipulate types.
+
+## 8. Imports & Exports
+- **Use type-only imports:** Use `import type` for types to improve clarity and performance.
+- **Consistent export style:** Prefer named exports for components and utilities.
+
+## 9. Strictness
+- **Enable strict mode:** Always enable `strict` in `tsconfig.json` for maximum type safety.
+- **No implicit any:** Avoid implicit `any` types by always specifying types or enabling strict settings.
+
+## 10. General
+- **Refactor types:** Regularly refactor and extract types/interfaces for reuse and clarity.
+- **Document complex types:** Use comments or JSDoc to explain complex or non-obvious types.
+- **Stay up to date:** Keep up with TypeScript and React type updates for best practices and new features.

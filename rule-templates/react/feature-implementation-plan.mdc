@@ -1,0 +1,88 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Workflow for Implementing a Big Change or New Feature in React
+
+## 1. Preparation & Planning
+- **Define the feature/change:** Clearly describe the feature, its purpose, and the problem it solves.
+- **Stakeholder alignment:** Confirm requirements and priorities with stakeholders (product, design, engineering).
+- **Research & references:** Gather relevant documentation, user stories, and technical references.
+
+## 2. Implementation Plan Document
+- **Create a dedicated plan file:** Place a markdown file (e.g., `feature-xyz-implementation-plan.mdx`) in the project or feature directory.
+- **Include the following sections:**
+  - **Overview:** Brief summary of the feature/change.
+  - **Goals & Success Criteria:** What does success look like?
+  - **Design/UX:** Link to Figma, wireframes, or design specs.
+  - **Technical Approach:** Outline architecture, data flow, and key decisions.
+  - **Dependencies:** List external APIs, libraries, or teams involved.
+  - **Risks & Mitigations:** Identify potential blockers and how to address them.
+  - **Testing Strategy (Edge Cases):** How will you test this feature (unit, integration, manual, etc.)?
+  - **Rollout Plan:** Steps for deploying, feature flagging, or gradual rollout.
+  - **Checklist:** Detailed, step-by-step tasks grouped by phase (see below).
+
+## 3. Task Breakdown & Checklist (Grouped by Phase)
+- **Group tasks into logical subsections:** Complete all tasks in one group before moving to the next. Example groups:
+  - **API & Data Layer**
+  - **Add Component X**
+  - **Integration**
+  - **Testing**
+
+## 4. Execution & Tracking
+- **Work in branches:** Create a dedicated git branch for the feature.
+- **Update the plan:** Check off tasks as they are completed. Add notes or blockers as needed.
+- **Regular syncs:** Review progress in standups or async updates.
+
+## 6. Template
+```markdown
+# Feature/Change: [Title]
+
+## Overview
+Brief summary of the feature/change.
+
+## Goals & Success Criteria
+- [ ] Goal 1
+- [ ] Goal 2
+
+## Design/UX
+- [Figma link](mdc:#)
+
+## Technical Approach
+- ...
+
+## Dependencies
+- ...
+
+## Risks & Mitigations
+- ...
+
+## Testing Strategy (Edge Cases)
+- ...
+
+## Rollout Plan
+- ...
+
+## Implementation Checklist
+
+### 1. Mock Data layer
+- [ ] Task 1
+- [ ] Task 2
+
+### 2. Add Component X
+- [ ] Task 1
+- [ ] Task 2
+
+### 3. Update Component Y
+- [ ] Task 1
+- [ ] Task 2
+
+### 4. Integrate with Backend
+- [ ] Task 1
+- [ ] Task 2
+
+### 5. Testing
+- [ ] Task 1
+- [ ] Task 2
+```

@@ -1,5 +1,36 @@
 ---
 description:
-globs:
+globs: *.ts,*.tsx
 alwaysApply: false
 ---
+# React Base Rules & Best Practices
+
+## 1. Component Design
+- **Keep components small and focused:** Each component should do one thing well. If it grows too large, break it into smaller components.
+- **Prefer functional components:** Use function components and hooks over class components for new code.
+- **Props are read-only:** Never mutate props. Use state or context for data that changes.
+- **Use TypeScript:** Always type-check your props for reliability and maintainability.
+
+## 2. Modularization & Structure
+- **Organize by feature, not type:** Group files by feature/domain rather than by file type (e.g., `ProfileEditPage/components/Avatar.tsx` instead of `components/Profile.tsx`).
+- **Common files:** For files that are for common use put them under a shared `common` folder (e.g., `/src/common/components/forms/Input.tsx` or `/src/common/hooks/useNavigationUpdate.ts`, skip the `src` if not present in the project)
+- **Encapsulate logic:** Use custom hooks (`useXyz`) to extract and reuse logic across components.
+- **Limit file size:** If a file exceeds ~200 lines, consider splitting it.
+
+## 3. State Management
+- **Local state first:** Use component state for local concerns, context or state libraries (Redux, Zustand, etc.) for shared/global state.
+- **Avoid prop drilling:** Use context or state management libraries to avoid passing props through many layers.
+
+## 4. Memoization & Performance
+- **Use `React.memo` for pure components:** Wrap components that render the same output for the same props.
+- **Use `useMemo` and `useCallback` wisely:** Memoize expensive calculations and stable callbacks, but avoid premature optimization.
+- **Key lists properly:** Always provide a unique and stable `key` prop when rendering lists.
+
+## 5. Side Effects & Data Fetching
+- **Use `useEffect` for side effects:** Only perform side effects (data fetching, subscriptions) inside `useEffect` or similar hooks.
+- **Cleanup effects:** Always return a cleanup function from `useEffect` if necessary (e.g., for subscriptions or timers).
+
+## 10. General
+- **Avoid side effects in render:** Never perform side effects directly in the render body.
+- **Don't duplicate logic:** Reuse hooks, utilities, and components to avoid code duplication.
+- **Reflect and refactor:** Regularly review and refactor code for clarity and maintainability.
