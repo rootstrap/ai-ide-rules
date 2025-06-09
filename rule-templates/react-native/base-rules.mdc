@@ -16,7 +16,7 @@ alwaysApply: false
 
 ## UI & Styling
 - Use Nativewind for styling.
-- Avoid one sided margins and paddings when possible.
+- Avoid one sided margins and paddings when possible. Instead, prefer adding container views when needed with gap, vertical padding or horizontal padding.
 - Use built-in ui components such as Button, Input from `@components/ui`
 - Avoid unnecessary re-renders by memoizing components and using useMemo and useCallback hooks appropriately.
 - Ensure accessibility (a11y) with ARIA/native props.
