@@ -10,7 +10,7 @@ alwaysApply: false
 
 ## Components
 - Use functional components.
-- Keep components modular, reusable, and <80 lines.
+- Keep components modular, reusable, and <120 lines.
 - Use declarative JSX.
 - Memoize components to avoid unnecessary re-renders.
 
