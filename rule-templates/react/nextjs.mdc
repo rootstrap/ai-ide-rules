@@ -1,0 +1,313 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Next.js 15 Best Practices & Patterns
+
+## 1. App Router & Server Components (Default)
+- **Use App Router:** Always use the App Router (`app/` directory) for new projects - it's the default and recommended approach in Next.js 15.
+- **Server Components by default:** All components are Server Components by default - only use Client Components when necessary.
+  ```tsx
+  // ✅ Server Component (default)
+  export default function ProductPage({ params }: { params: { id: string } }) {
+    // This runs on the server
+    const product = await fetchProduct(params.id);
+    return <ProductDetails product={product} />;
+  }
+
+  // ✅ Client Component (only when needed)
+  'use client';
+  export default function InteractiveButton() {
+    const [count, setCount] = useState(0);
+    return <button onClick={() => setCount(count + 1)}>{count}</button>;
+  }
+  ```
+
+## 2. Data Fetching Strategy
+- **Above-the-fold: Server-side:** Fetch critical, visible content on the server for better performance and SEO.
+- **Below-the-fold: Client-side:** Use client-side fetching for content below the fold, especially user-specific or interactive data.
+  ```tsx
+  // ✅ Above-the-fold: Server Component
+  export default async function HomePage() {
+    const heroData = await fetchHeroContent(); // Critical content
+    const featuredProducts = await fetchFeaturedProducts();
+
+    return (
+      <div>
+        <HeroSection data={heroData} />
+        <FeaturedProducts products={featuredProducts} />
+        <ReviewsSection /> {/* Below-the-fold client component */}
+      </div>
+    );
+  }
+
+  // ✅ Below-the-fold: Client Component
+  'use client';
+  export default function ReviewsSection() {
+    const [reviews, setReviews] = useState([]);
+
+    useEffect(() => {
+      fetchReviews().then(setReviews); // Load when component mounts
+    }, []);
+
+    return <div>{/* Reviews content */}</div>;
+  }
+  ```
+
+## 3. Server Actions & Forms
+- **Use Server Actions for mutations:** Leverage Server Actions for form submissions and data mutations.
+- **Progressive enhancement:** Forms should work without JavaScript using Server Actions.
+  ```tsx
+  // ✅ Server Action
+  async function createPost(formData: FormData) {
+    'use server';
+
+    const title = formData.get('title') as string;
+    const content = formData.get('content') as string;
+
+    await db.post.create({ data: { title, content } });
+    redirect('/posts');
+  }
+
+  // ✅ Form with Server Action
+  export default function CreatePostForm() {
+    return (
+      <form action={createPost}>
+        <input name="title" required />
+        <textarea name="content" required />
+        <button type="submit">Create Post</button>
+      </form>
+    );
+  }
+  ```
+
+## 4. Streaming & Suspense
+- **Use Streaming for better UX:** Implement streaming to show content progressively.
+- **Strategic Suspense boundaries:** Place Suspense boundaries around slow-loading components.
+  ```tsx
+  // ✅ Streaming with Suspense
+  export default function DashboardPage() {
+    return (
+      <div>
+        <Header /> {/* Fast-loading content */}
+        <Suspense fallback={<UserProfileSkeleton />}>
+          <UserProfile /> {/* Slow server component */}
+        </Suspense>
+        <Suspense fallback={<AnalyticsSkeleton />}>
+          <Analytics /> {/* Another slow component */}
+        </Suspense>
+      </div>
+    );
+  }
+  ```
+
+## 5. Caching Strategy
+- **Understand Next.js caching layers:** Request Memoization, Data Cache, Full Route Cache, and Router Cache.
+- **Use appropriate cache tags:** Implement cache tags for granular revalidation.
+  ```tsx
+  // ✅ Cache with tags for revalidation
+  async function fetchUser(id: string) {
+    const response = await fetch(`/api/users/${id}`, {
+      next: {
+        tags: [`user-${id}`],
+        revalidate: 3600 // 1 hour
+      }
+    });
+    return response.json();
+  }
+
+  // ✅ Revalidate specific cache
+  import { revalidateTag } from 'next/cache';
+
+  async function updateUser(id: string, data: UserData) {
+    'use server';
+
+    await updateUserInDb(id, data);
+    revalidateTag(`user-${id}`);
+  }
+  ```
+
+## 6. Performance Optimization
+- **Lazy load non-critical components:** Use dynamic imports for heavy components.
+- **Optimize images:** Always use Next.js Image component with proper sizing.
+- **Bundle analysis:** Regularly analyze bundle size and optimize imports.
+  ```tsx
+  // ✅ Lazy loading heavy components
+  import dynamic from 'next/dynamic';
+
+  const HeavyChart = dynamic(() => import('./HeavyChart'), {
+    loading: () => <ChartSkeleton />,
+    ssr: false // Client-side only if needed
+  });
+
+  // ✅ Optimized images
+  import Image from 'next/image';
+
+  export function ProductImage({ src, alt }: { src: string; alt: string }) {
+    return (
+      <Image
+        src={src}
+        alt={alt}
+        width={400}
+        height={300}
+        priority // For above-the-fold images
+        placeholder="blur"
+        blurDataURL="data:image/jpeg;base64,..."
+      />
+    );
+  }
+  ```
+
+## 7. Route Organization
+- **Organize by feature:** Structure routes by feature rather than by component type.
+- **Use route groups:** Organize routes with parentheses for better structure without affecting URL.
+  ```
+  // ✅ Feature-based organization
+  app/
+  ├── (auth)/
+  │   ├── login/
+  │   └── register/
+  ├── (dashboard)/
+  │   ├── analytics/
+  │   └── settings/
+  ├── products/
+  │   ├── [id]/
+  │   └── category/[slug]/
+  └── api/
+      ├── products/
+      └── users/
+  ```
+
+## 8. TypeScript Integration
+- **Use Next.js TypeScript features:** Leverage built-in TypeScript support and type safety.
+- **Type route parameters:** Always type dynamic route parameters and search params.
+  ```tsx
+  // ✅ Typed page components
+  interface PageProps {
+    params: { id: string };
+    searchParams: { [key: string]: string | string[] | undefined };
+  }
+
+  export default function ProductPage({ params, searchParams }: PageProps) {
+    const { id } = params;
+    const sortBy = searchParams.sort as string;
+
+    return <div>Product {id} sorted by {sortBy}</div>;
+  }
+
+  // ✅ Type-safe API routes
+  import { NextRequest, NextResponse } from 'next/server';
+
+  export async function GET(
+    request: NextRequest,
+    { params }: { params: { id: string } }
+  ) {
+    const { id } = params;
+    const product = await fetchProduct(id);
+
+    return NextResponse.json(product);
+  }
+  ```
+
+## 9. Error Handling
+- **Use error boundaries:** Implement error.tsx files for graceful error handling.
+- **Handle loading states:** Provide loading.tsx files for better UX.
+  ```tsx
+  // ✅ Error boundary (error.tsx)
+  'use client';
+
+  export default function Error({
+    error,
+    reset,
+  }: {
+    error: Error & { digest?: string };
+    reset: () => void;
+  }) {
+    return (
+      <div>
+        <h2>Something went wrong!</h2>
+        <button onClick={() => reset()}>Try again</button>
+      </div>
+    );
+  }
+
+  // ✅ Loading state (loading.tsx)
+  export default function Loading() {
+    return <div>Loading...</div>;
+  }
+  ```
+
+## 10. Middleware & Authentication
+- **Use middleware for auth:** Implement authentication checks at the edge.
+- **Protect routes efficiently:** Use middleware to protect entire route groups.
+  ```tsx
+  // ✅ Middleware for auth (middleware.ts)
+  import { NextResponse } from 'next/server';
+  import type { NextRequest } from 'next/server';
+
+  export function middleware(request: NextRequest) {
+    const token = request.cookies.get('auth-token')?.value;
+
+    if (!token && request.nextUrl.pathname.startsWith('/dashboard')) {
+      return NextResponse.redirect(new URL('/login', request.url));
+    }
+
+    return NextResponse.next();
+  }
+
+  export const config = {
+    matcher: ['/dashboard/:path*', '/admin/:path*']
+  };
+  ```
+
+## 11. SEO & Meta Data
+- **Use Metadata API:** Leverage the new Metadata API for better SEO.
+- **Dynamic metadata:** Generate metadata based on page content.
+  ```tsx
+  // ✅ Static metadata
+  import type { Metadata } from 'next';
+
+  export const metadata: Metadata = {
+    title: 'My App',
+    description: 'The best app ever',
+  };
+
+  // ✅ Dynamic metadata
+  export async function generateMetadata(
+    { params }: { params: { id: string } }
+  ): Promise<Metadata> {
+    const product = await fetchProduct(params.id);
+
+    return {
+      title: product.name,
+      description: product.description,
+      openGraph: {
+        title: product.name,
+        description: product.description,
+        images: [product.image],
+      },
+    };
+  }
+  ```
+
+## 12. Testing Strategy
+- **Test Server Components:** Use appropriate testing strategies for server vs client components.
+- **Mock Server Actions:** Properly mock Server Actions in tests.
+- **Integration tests:** Test the full flow including Server Actions and route handlers.
+
+## 13. Deployment & Production
+- **Use environment variables:** Properly configure environment variables for different environments.
+- **Optimize for production:** Enable compression, proper caching headers, and CDN integration.
+- **Monitor performance:** Use Next.js built-in analytics and monitoring tools.
+
+## 14. Migration & Upgrade
+- **Gradual migration:** When upgrading from Pages Router, migrate incrementally.
+- **Coexistence:** Pages and App Router can coexist during migration.
+- **Test thoroughly:** Comprehensive testing when migrating between router types.
+
+## 15. General Best Practices
+- **Follow React Server Components patterns:** Understand the difference between server and client components.
+- **Minimize client-side JavaScript:** Keep client components small and focused.
+- **Use React 18+ features:** Leverage concurrent features like useTransition for better UX.
+- **Stay updated:** Keep up with Next.js updates and new patterns.
