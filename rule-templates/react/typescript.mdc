@@ -1,5 +1,5 @@
 ---
-description: Typescript best practices and conventions
+description:
 globs: *.tsx,*.ts
 alwaysApply: false
 ---

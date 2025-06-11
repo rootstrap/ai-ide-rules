@@ -1,0 +1,43 @@
+---
+description:
+globs: *.test.ts,*.test.tsx
+alwaysApply: false
+---
+# React Testing Strategy: Vitest
+
+## 1. Testing Framework
+- **Use Vitest:** All tests should be written using Vitest as the primary testing framework.
+- **React Testing Library:** Use React Testing Library for rendering and interacting with components.
+
+## 2. Test Types
+- **Unit tests:** Test individual components, hooks, and utilities in isolation.
+- **Integration tests:** Test how components interact with each other and with external modules.
+- **Avoid end-to-end tests in Vitest:** Use dedicated tools (e.g., Cypress, Playwright) for E2E.
+
+## 3. Test Organization
+- **Colocate tests:** Place test files next to the code they test, using `.test.tsx` or `.test.ts` suffixes.
+- **Naming conventions:** Use descriptive test and suite names.
+
+## 4. Coverage & Quality
+- **Code coverage:** Aim for at least 80% code coverage.
+- **Test what matters:** Focus on critical logic, user interactions, and edge cases.
+
+## 5. Mocking
+- **Mock external dependencies:** Use Vitest's mocking features for APIs, modules, and timers.
+- **Avoid over-mocking:** Prefer real implementations unless isolation is required.
+
+## 6. Best Practices
+- **Arrange-Act-Assert:** Structure tests clearly for readability.
+- **Avoid testing implementation details:** Test behavior and output, not internal logic. Focus on how something should work instead of how it is implemented. Ask for acceptance criteria if needed.
+- **Use `screen` from React Testing Library:** Prefer `screen` for queries to encourage best practices.
+- **Cleanup:** Ensure tests clean up after themselves (React Testing Library does this automatically).
+
+## 7. Running Tests
+- **Don't use Watch mode:** When asked to run a test don't run it in watch mode as the script never ends and you won't get an output to read. Use run mode instead.
+- **Iterate:** If you run a test and it fails, take the output into consideration and make changes to fix it. Then run the test again and repeat the iteration process until the test suceeds. If you have iterated more than 15 times and the test still fails stop to regroup with your chat copilot.
+
+## 8. Troubleshooting
+- **Debugging:** Use `--runInBand` and `--detectOpenHandles` for debugging flaky tests.
+
+## 9. Documentation
+- **Document complex tests:** Use comments to explain non-obvious test logic.
