@@ -75,7 +75,6 @@ This file has useful rules meant for a Node project.
 - Keep controllers thin by moving business logic to service layer
 - Use `Map` instead of arrays for key-value pair operations
 - Organize related functionality into classes following SOLID principles
-
   </coding_practices>
 
 <testing_practices>
@@ -87,8 +86,7 @@ This file has useful rules meant for a Node project.
 - Define mocks in `beforeAll` or `beforeEach` hooks to avoid repetition
 - Extract complex mocks into separate files for reusability
 - Maintain minimum 90% code coverage for unit tests
-
-</testing_practices>
+  </testing_practices>
 
 <documentation_practices>
 
@@ -96,5 +94,4 @@ This file has useful rules meant for a Node project.
 - Use `@ApiTags`, `@ApiOperation`, and `@ApiResponse` for comprehensive API documentation
 - Add JSDoc comments with examples for complex functions
 - Include request/response examples in Swagger documentation
-
-</documentation_practices>
+  </documentation_practices>
