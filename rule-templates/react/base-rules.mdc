@@ -7,30 +7,146 @@ alwaysApply: false
 
 ## 1. Component Design
 - **Keep components small and focused:** Each component should do one thing well. If it grows too large, break it into smaller components.
-- **Prefer functional components:** Use function components and hooks over class components for new code.
-- **Props are read-only:** Never mutate props. Use state or context for data that changes.
+  ```tsx
+  // ❌ Too many responsibilities
+  const UserDashboard = () => {
+    // user data fetching, profile editing, analytics, notifications...
+  }
+
+  // ✅ Single responsibility
+  const UserProfile = () => { /* profile display only */ }
+  const UserStats = () => { /* analytics only */ }
+  ```
+
+- **Prefer functional components:** Use arrow function components and hooks over class components for new code.
+  ```tsx
+  // ❌ Class component
+  class Counter extends React.Component {
+    state = { count: 0 };
+    render() { return <div>{this.state.count}</div> }
+  }
+
+  // ✅ Functional component
+  const Counter = () => {
+    const [count, setCount] = useState(0);
+    return <div>{count}</div>;
+  }
+  ```
+
 - **Use TypeScript:** Always type-check your props for reliability and maintainability.
 
 ## 2. Modularization & Structure
 - **Organize by feature, not type:** Group files by feature/domain rather than by file type (e.g., `ProfileEditPage/components/Avatar.tsx` instead of `components/Profile.tsx`).
-- **Common files:** For files that are for common use put them under a shared `common` folder (e.g., `/src/common/components/forms/Input.tsx` or `/src/common/hooks/useNavigationUpdate.ts`, skip the `src` if not present in the project)
+  ```
+  // ❌ Organized by type
+  /components/UserProfile.tsx
+  /components/UserSettings.tsx
+  /hooks/useUser.ts
+
+  // ✅ Organized by feature
+  /user/components/UserProfile.tsx
+  /user/components/UserSettings.tsx
+  /user/hooks/useUser.ts
+  ```
+
+- **Common files:** For files that are for common use put them under a shared `common` folder (e.g., `/src/common/components/forms/Input.tsx` or `/src/common/hooks/useNavigationUpdate.ts`
+
 - **Encapsulate logic:** Use custom hooks (`useXyz`) to extract and reuse logic across components.
+  ```tsx
+  // ❌ Logic mixed in component
+  const TodoList = () => {
+    const [todos, setTodos] = useState([]);
+    const [loading, setLoading] = useState(false);
+    // 20+ lines of fetch logic...
+  }
+
+  // ✅ Logic extracted to custom hook
+  const useTodos = () => {
+    const [todos, setTodos] = useState([]);
+    const [loading, setLoading] = useState(false);
+    // fetch logic here
+    return { todos, loading, addTodo, removeTodo };
+  }
+
+  const TodoList = () => {
+    const { todos, loading } = useTodos();
+    return loading ? <Spinner /> : <List items={todos} />;
+  }
+  ```
+
 - **Limit file size:** If a file exceeds ~200 lines, consider splitting it.
 
-## 3. State Management
-- **Local state first:** Use component state for local concerns, context or state libraries (Redux, Zustand, etc.) for shared/global state.
-- **Avoid prop drilling:** Use context or state management libraries to avoid passing props through many layers.
-
-## 4. Memoization & Performance
-- **Use `React.memo` for pure components:** Wrap components that render the same output for the same props.
-- **Use `useMemo` and `useCallback` wisely:** Memoize expensive calculations and stable callbacks, but avoid premature optimization.
-- **Key lists properly:** Always provide a unique and stable `key` prop when rendering lists.
-
-## 5. Side Effects & Data Fetching
-- **Use `useEffect` for side effects:** Only perform side effects (data fetching, subscriptions) inside `useEffect` or similar hooks.
-- **Cleanup effects:** Always return a cleanup function from `useEffect` if necessary (e.g., for subscriptions or timers).
-
-## 10. General
+## 3. General
 - **Avoid side effects in render:** Never perform side effects directly in the render body.
+  ```tsx
+  // ❌ Side effect in render
+  const BadComponent = () => {
+    localStorage.setItem('key', 'value'); // Don't do this!
+    return <div>Content</div>;
+  }
+
+  // ✅ Side effect in useEffect
+  const GoodComponent = () => {
+    useEffect(() => {
+      localStorage.setItem('key', 'value');
+    }, []);
+    return <div>Content</div>;
+  }
+  ```
+
 - **Don't duplicate logic:** Reuse hooks, utilities, and components to avoid code duplication.
 - **Reflect and refactor:** Regularly review and refactor code for clarity and maintainability.
+
+## 4. Avoid Unnecessary Re-renders
+- **Lift state wisely:** Only lift state up when truly shared; colocate state as much as possible.
+  ```tsx
+  // ❌ State lifted too high
+  const App = () => {
+    const [userEmail, setUserEmail] = useState(''); // Only used in Profile
+    return <Profile email={userEmail} setEmail={setUserEmail} />;
+  }
+
+  // ✅ State colocated
+  const Profile = () => {
+    const [userEmail, setUserEmail] = useState('');
+    return <input value={userEmail} onChange={e => setUserEmail(e.target.value)} />;
+  }
+  ```
+
+- **Stable props:** Pass stable references (memoized functions/objects) to child components to avoid triggering re-renders.
+  ```tsx
+  // ❌ New function on every render
+  const Parent = () => {
+    return <Child onClick={() => console.log('clicked')} />;
+  }
+
+  // ✅ Stable callback reference
+  const Parent = () => {
+    const handleClick = useCallback(() => console.log('clicked'), []);
+    return <Child onClick={handleClick} />;
+  }
+  ```
+
+- **Key props:** Use stable and unique keys for list items to help React optimize rendering.
+  ```tsx
+  // ❌ Index as key
+  {items.map((item, index) => <Item key={index} data={item} />)}
+
+  // ✅ Stable unique key
+  {items.map(item => <Item key={item.id} data={item} />)}
+  ```
+
+## 5. Lazy Loading & Code Splitting
+- **Use `React.lazy` and `Suspense`:** Dynamically load components to reduce initial bundle size.
+  ```tsx
+  // ✅ Lazy load heavy components
+  const HeavyChart = lazy(() => import('./HeavyChart'));
+
+  const Dashboard = () => (
+    <Suspense fallback={<div>Loading chart...</div>}>
+      <HeavyChart />
+    </Suspense>
+  );
+  ```
+
+- **Split code at route and component level:** Use dynamic imports for large or infrequently used components.

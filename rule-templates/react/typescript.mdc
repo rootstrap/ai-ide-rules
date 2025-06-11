@@ -37,7 +37,6 @@ alwaysApply: false
 - **Consistent export style:** Prefer named exports for components and utilities.
 
 ## 9. Strictness
-- **Enable strict mode:** Always enable `strict` in `tsconfig.json` for maximum type safety.
 - **No implicit any:** Avoid implicit `any` types by always specifying types or enabling strict settings.
 
 ## 10. General

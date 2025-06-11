@@ -7,37 +7,240 @@ alwaysApply: false
 
 ## 1. Semantic HTML
 - **Use semantic elements:** Prefer native HTML elements (`<button>`, `<nav>`, `<main>`, `<header>`, etc.) over generic `<div>` and `<span>` for structure and interactivity.
+  ```tsx
+  // ❌ Non-semantic
+  <div onClick={handleClick} className="button">
+    Click me
+  </div>
+
+  // ✅ Semantic
+  <button onClick={handleClick}>
+    Click me
+  </button>
+  ```
+
 - **Label elements:** Always provide labels for form controls using `<label>` or `aria-label`.
+  ```tsx
+  // ❌ No label
+  <input type="email" placeholder="Enter email" />
+
+  // ✅ Proper label
+  <label htmlFor="email">Email Address</label>
+  <input id="email" type="email" />
+
+  // ✅ Alternative with aria-label
+  <input type="email" aria-label="Email Address" />
+  ```
 
 ## 2. ARIA Usage
 - **Use ARIA only when necessary:** Prefer native HTML semantics; use ARIA attributes (`aria-*`) to enhance accessibility only when native elements are insufficient.
+  ```tsx
+  // ❌ Unnecessary ARIA
+  <button aria-label="Close" role="button">×</button>
+
+  // ✅ Native semantics + minimal ARIA
+  <button aria-label="Close dialog">×</button>
+  ```
+
 - **Role attributes:** Use `role` attributes to clarify the purpose of custom components.
+  ```tsx
+  // ✅ Custom dropdown with proper role
+  <div role="combobox" aria-expanded={isOpen} aria-haspopup="listbox">
+    <input aria-autocomplete="list" />
+    <div role="listbox">
+      {options.map(option => (
+        <div key={option.id} role="option">{option.label}</div>
+      ))}
+    </div>
+  </div>
+  ```
 
 ## 3. Keyboard Navigation
 - **Tab order:** Ensure all interactive elements are reachable and usable via keyboard (Tab, Shift+Tab, Enter, Space, Arrow keys).
+  ```tsx
+  // ✅ Keyboard-accessible modal
+  const Modal = ({ isOpen, onClose }) => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+
+    return isOpen ? (
+      <div role="dialog" onKeyDown={handleKeyDown} tabIndex={-1}>
+        <button onClick={onClose}>Close</button>
+        <div>Modal content</div>
+      </div>
+    ) : null;
+  };
+  ```
+
 - **Focus management:** Use `tabIndex`, `autoFocus`, and programmatic focus (e.g., `ref.current.focus()`) to manage focus for dynamic content.
+  ```tsx
+  // ✅ Focus management in a search component
+  const SearchResults = ({ results }) => {
+    const firstResultRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+      if (results.length > 0) {
+        firstResultRef.current?.focus();
+      }
+    }, [results]);
+
+    return (
+      <div role="region" aria-label="Search results">
+        {results.map((result, index) => (
+          <button
+            key={result.id}
+            ref={index === 0 ? firstResultRef : undefined}
+            tabIndex={0}
+          >
+            {result.name}
+          </button>
+        ))}
+      </div>
+    );
+  };
+  ```
+
 - **Skip links:** Provide skip navigation links for users to bypass repetitive content.
+  ```tsx
+  // ✅ Skip link implementation
+  const Layout = ({ children }) => (
+    <div>
+      <a href="#main-content" className="skip-link">
+        Skip to main content
+      </a>
+      <nav>Navigation links...</nav>
+      <main id="main-content" tabIndex={-1}>
+        {children}
+      </main>
+    </div>
+  );
+  ```
 
 ## 4. Accessible Forms
 - **Associate labels:** Use `<label htmlFor="id">` to associate labels with inputs.
+  ```tsx
+  // ✅ Properly associated form
+  const ContactForm = () => (
+    <form>
+      <div>
+        <label htmlFor="name">Full Name</label>
+        <input id="name" type="text" required />
+      </div>
+      <div>
+        <label htmlFor="message">Message</label>
+        <textarea id="message" required />
+      </div>
+    </form>
+  );
+  ```
+
 - **Error messages:** Announce form errors using ARIA live regions or semantic elements.
+  ```tsx
+  // ✅ Accessible error handling
+  const FormField = ({ error, children }) => (
+    <div>
+      {children}
+      {error && (
+        <div role="alert" aria-live="polite" className="error">
+          {error}
+        </div>
+      )}
+    </div>
+  );
+  ```
+
 - **Fieldset and legend:** Use `<fieldset>` and `<legend>` for grouping related form controls.
+  ```tsx
+  // ✅ Grouped form controls
+  <fieldset>
+    <legend>Contact Information</legend>
+    <label htmlFor="email">Email</label>
+    <input id="email" type="email" />
+    <label htmlFor="phone">Phone</label>
+    <input id="phone" type="tel" />
+  </fieldset>
+  ```
 
 ## 5. Color & Contrast
 - **Sufficient contrast:** Ensure text and interactive elements have a contrast ratio of at least 4.5:1 against their background.
 - **Don't rely on color alone:** Use text, icons, or patterns in addition to color to convey information.
+  ```tsx
+  // ❌ Color-only indication
+  <div style={{ color: 'red' }}>Error occurred</div>
+
+  // ✅ Color + icon + text
+  <div className="error">
+    <ErrorIcon aria-hidden="true" />
+    Error: Please fix the required fields
+  </div>
+  ```
 
 ## 6. Images & Media
 - **Alt text:** Provide descriptive `alt` attributes for images. Use empty `alt` for decorative images.
+  ```tsx
+  // ❌ Missing or poor alt text
+  <img src="chart.png" alt="image" />
+
+  // ✅ Descriptive alt text
+  <img src="chart.png" alt="Sales increased 25% from January to March 2024" />
+
+  // ✅ Decorative image
+  <img src="decoration.png" alt="" role="presentation" />
+  ```
+
 - **Captions and transcripts:** Provide captions for video and transcripts for audio content.
+  ```tsx
+  // ✅ Accessible video
+  <video controls>
+    <source src="video.mp4" type="video/mp4" />
+    <track kind="captions" src="captions.vtt" srcLang="en" label="English" />
+    Your browser does not support the video tag.
+  </video>
+  ```
 
 ## 7. Live Regions & Announcements
 - **Use ARIA live regions:** Announce dynamic content changes (e.g., notifications, form errors) using `aria-live` attributes.
+  ```tsx
+  // ✅ Live region for status updates
+  const StatusNotification = ({ message, type }) => (
+    <div
+      role="status"
+      aria-live={type === 'error' ? 'assertive' : 'polite'}
+      aria-atomic="true"
+    >
+      {message}
+    </div>
+  );
+
+  // ✅ Loading state announcement
+  const DataList = ({ loading, data }) => (
+    <div>
+      {loading && (
+        <div aria-live="polite" aria-busy="true">
+          Loading data...
+        </div>
+      )}
+      {data && <ul>{data.map(item => <li key={item.id}>{item.name}</li>)}</ul>}
+    </div>
+  );
+  ```
 
 ## 9. Component Libraries
 - **Accessible by default:** Prefer component libraries with strong accessibility support (e.g., Material UI, Reach UI, Radix UI).
 - **Customize responsibly:** When customizing components, ensure accessibility is preserved.
 
+
 ## 10. General
 - **Continuous learning:** Stay updated with [WCAG](mdc:https:/www.w3.org/WAI/standards-guidelines/wcag) and accessibility best practices.
 - **Empathy first:** Design and test for users with diverse abilities and assistive technologies.
+  ```tsx
+  // ✅ Testing accessibility
+  // Use tools like @testing-library/jest-dom for accessibility testing
+  test('button is accessible', () => {
+    render(<button>Click me</button>);
+    const button = screen.getByRole('button', { name: /click me/i });
+    expect(button).toBeInTheDocument();
+    expect(button).not.toHaveAttribute('aria-disabled');
+  });
+  ```

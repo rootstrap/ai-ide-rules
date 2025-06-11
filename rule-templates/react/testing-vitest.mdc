@@ -19,7 +19,7 @@ alwaysApply: false
 - **Naming conventions:** Use descriptive test and suite names.
 
 ## 4. Coverage & Quality
-- **Code coverage:** Aim for at least 80% code coverage. Use Vitest's coverage tools to monitor.
+- **Code coverage:** Aim for at least 80% code coverage.
 - **Test what matters:** Focus on critical logic, user interactions, and edge cases.
 
 ## 5. Mocking
