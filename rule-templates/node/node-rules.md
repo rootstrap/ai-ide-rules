@@ -15,10 +15,9 @@ This file has useful rules meant for a Node project.
 ```md
 # Coding Guidelines
 
-- My project's programming language is python
+- My project's runtime is node
 - Use early returns when possible
 - Always add documentation when creating new functions and classes
-  XML tags can be an effective way to communicate and group similar rules together. For example:
 ```
 
 - XML tags can be an effective way to communicate and group similar rules together. For example:
