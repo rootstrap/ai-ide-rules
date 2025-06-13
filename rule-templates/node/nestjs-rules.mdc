@@ -1,13 +1,9 @@
 ---
-description: 
-globs: 
-alwaysApply: true
----
----
 description: NestJS rules
 globs: *.ts
 alwaysApply: true
 ---
+
 # Nestjs rules
 
 ## Project Structure and Organization
