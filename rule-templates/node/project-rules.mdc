@@ -1,4 +1,8 @@
 ---
+description: "Project specific best practices, versioning and configurable guidelines."
+globs:
+alwaysApply: true
+---
 # versioning
 ```
 - Node.js version must be x.y.z
@@ -29,10 +33,12 @@
 - Maximum API response time must be x ms
 ```
 
+---
 # branching
 ```
 - Require x code reviews before merge
 ```
+---
 
 # release
 ```
@@ -45,4 +51,3 @@
 - README must be updated with every major/minor/patch release
 - API docs must be regenerated with every endpoint change
 ```
----

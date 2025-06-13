@@ -1,4 +1,7 @@
-
+---
+description: "Node-specific best practices and guidelines."
+globs: "**/*.{js,ts}"
+alwaysApply: true
 ---
 # tech_stack
 ```
@@ -37,4 +40,3 @@
 ```
 - Add JSDoc comments with examples for complex functions
 ```
----
