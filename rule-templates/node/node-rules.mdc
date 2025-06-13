@@ -1,0 +1,40 @@
+
+---
+# tech_stack
+```
+- NestJS framework
+- PostgreSQL database
+- TypeORM ORM
+- Docker for containerization
+- Docker Compose for orchestration
+- Jest for testing
+- ESLint for code quality
+```
+
+# coding_practices
+```
+- Follow ESLint rules (eslint.config.mjs)
+- Avoid using `any` type to maintain type safety
+- Use bcrypt for password hashing to ensure secure password storage
+- Use structured logging instead of `console.log` statements
+- Implement proper error handling in async functions using try/catch blocks
+- Use `Promise.all()` for concurrent operations when possible
+- Use `Map` instead of arrays for key-value pair operations
+- Organize related functionality into classes following SOLID principles
+```
+
+# testing_practices
+```
+- Keep tests focused and simple (one assertion per test)
+- Use single `expect` statement per test for clarity
+- Name tests following Given/When/Then pattern for clarity
+- Use `beforeEach`/`afterEach` hooks for consistent test setup and cleanup
+- Define mocks in `beforeAll` or `beforeEach` hooks to avoid repetition
+- Extract complex mocks into separate files for reusability
+```
+
+# documentation_practices
+```
+- Add JSDoc comments with examples for complex functions
+```
+---

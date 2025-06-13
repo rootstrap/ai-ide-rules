@@ -1,0 +1,11 @@
+---
+# versioning
+```
+- Node.js version must be v22.12.0
+```
+
+# coverage
+```
+- Minimum code coverage for unit tests must be 90%
+```
+---
