@@ -1,0 +1,90 @@
+---
+description: 
+globs: *.ts
+alwaysApply: false
+---
+---
+name: typescript-node-backend-best-practices
+description: Typescript rules for NodeJS
+globs:
+  - "*.ts"
+  - "tsconfig.json"
+alwaysApply: true
+tags:
+  - typescript
+  - nodejs
+  - backend
+---
+rules:
+  - name: Use interface for function arguments when exceeding 3 parameters
+    description: For functions with more than 3 arguments, define an interface to improve readability and maintainability.
+    condition: function has more than 3 parameters
+
+  - name: Define interface for custom object return types
+    description: Always define an interface or type for returned objects instead of inline object structures.
+    condition: function returns an inline object with multiple properties
+
+  - name: Use `import type` for type-only imports
+    description: Improves clarity and speeds up TypeScript compilation.
+    match: ^import\s+{[^}]*}\s+from\s+['"].*['"];
+    condition: import is only used as a type
+
+  - name: Handle all async calls with try/catch or .catch()
+    description: Wrap all external calls in try/catch to prevent unhandled errors in the application.
+    match: \b(await\s+[^\s(]+\(.*\))
+    condition: not inside try block
+
+  - name: Avoid complex inline union/intersection types
+    description: Define descriptive named types instead of using complex unions or intersections inline.
+    match: type\s+\w+\s*=\s*[^=]*\|[^=]*\|[^=]*;
+
+  - name: Enforce `"strict": true` in tsconfig.json
+    description: Always enable strict mode to get full benefits of TypeScript's type safety.
+    file: tsconfig.json
+    match: '"strict":\s*false'
+
+  - name: Prefer `type` over `interface` unless extension is required
+    description: Use `type` aliases for flexibility unless you need interface extension or declaration merging.
+    match: ^interface\s+\w+\s+{[^}]*}
+    condition: not extended or merged
+
+  - name: Avoid using `any`
+    description: `any` defeats the purpose of static typing. Use `unknown`, `Record<string, unknown>`, or narrow types.
+    match: \bany\b
+
+  - name: Use enums or literal types for sets of constants
+    description: Improves type safety and consistency when working with value sets.
+    condition: usage of strings as value set without type enforcement
+
+  - name: Do not expose sensitive environment variables directly
+    description: Avoid logging or exposing `process.env.*` variables directly in the code.
+    match: process\.env\.[A-Z_]+
+    condition: appears in console.log or response
+
+  - name: Prefer composition over inheritance
+    description: In backend service design, favor functional composition or delegation over class inheritance.
+    condition: class extends another class without clear reuse
+
+  - name: Avoid top-level await in modules
+    description: Top-level await can lead to unpredictable startup behavior in Node.js.
+    match: ^\s*await\s+
+    condition: outside any async function
+
+  - name: Implement custom error classes
+    description: Create specific error classes that extend Error for better error handling and type safety.
+    match: class\s+\w+\s+extends\s+Error
+    condition: error handling without custom error classes
+
+  - name: Structured logging
+    description: Use structured logging instead of console.log for better observability.
+    match: console\.(log|error|warn|info)
+    condition: usage of console.log in production code
+
+  - name: Async operations batching
+    description: Batch similar async operations.
+    condition: multiple similar async operations executed sequentially
+
+  - name: Code documentation
+    description: Document complex business logic and algorithms.
+    match: ^\s*(function|class|interface|type)\s+\w+
+    condition: complex code without documentation
