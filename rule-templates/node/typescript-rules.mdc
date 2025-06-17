@@ -1,12 +1,7 @@
 ---
-description: 
-globs: *.ts
-alwaysApply: false
----
----
 name: typescript-node-backend-best-practices
 description: Typescript rules for NodeJS
-globs:
+globs: 
   - "*.ts"
   - "tsconfig.json"
 alwaysApply: true
