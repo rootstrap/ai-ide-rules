@@ -21,6 +21,11 @@ Use a modular structure with clearly separated directories:
     /pipes
     /config
     /shared
+    /models
+    /repositories
+    /constants
+    /decorators
+    /tests
 ```
 
 - **Controllers should remain thin**  
@@ -102,3 +107,17 @@ Use built-in NestJS features unless there's a strong reason not to.
 
 - **Use built-in Pipes, Guards, and Interceptors where possible**  
 Only create custom logic if built-in solutions don’t fit your needs.
+
+## API Documentation Practices
+
+- **Use Swagger decorators to document API endpoints**
+Use the `@nestjs/swagger` package to provide automatic OpenAPI documentation.
+
+- **Use `@ApiTags()`, `@ApiOperation()`, and `@ApiResponse()`**
+These decorators help categorize and describe endopoints clearly for developers and consumers.
+
+- **Include request and response examples**
+Whenever applicable, add examples using `@ApiBody()`, `@ApiResponse({ examples: ... })`.
+
+- **Keep Swagger documentation in sync**
+Update annotations and examples as endpoints or DTOs changes.
