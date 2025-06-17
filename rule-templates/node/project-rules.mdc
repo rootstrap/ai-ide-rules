@@ -4,7 +4,6 @@ globs:
 alwaysApply: true
 ---
 # versioning
-```
 - Node.js version must be x.y.z
 - NestJS version must be x.y.z
 - NPM version must be x.y.z
@@ -21,33 +20,22 @@ alwaysApply: true
 - Swagger/OpenAPI version must be x.y.z
 - Cypress version must be x.y.z (if used)
 - Supertest version must be x.y.z (if used)
-```
 
 # coverage
-```
 - Minimum code coverage for unit tests must be x%
-```
 
 # performance
-```
 - Maximum API response time must be x ms
-```
 
 ---
 # branching
-```
 - Require x code reviews before merge
-```
 ---
 
 # release
-```
 - Release frequency must be at least x per sprint
 - All releases must be documented in CHANGELOG.md
-```
 
 # documentation
-```
 - README must be updated with every major/minor/patch release
 - API docs must be regenerated with every endpoint change
-```
