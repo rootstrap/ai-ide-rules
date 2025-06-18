@@ -4,7 +4,6 @@ description: Typescript rules for NodeJS
 globs: 
   - "*.ts"
   - "tsconfig.json"
-alwaysApply: true
 tags:
   - typescript
   - nodejs
