@@ -17,7 +17,8 @@ This repository contains standardized rule definitions for AI-powered IDEs such 
 - [3. What to Commit to the Project Repository](#3-what-to-commit-to-the-project-repository)
 - [4. Setting Up AI IDE Rules](#4-setting-up-ai-ide-rules)
   - [4.1 Cursor Setup](#41-cursor-setup)
-  - [4.2 Windsurf Setup](#42-windsurf-setup)
+  - [4.2 Cursor Rule Modes](#42-cursor-rule-modes)
+  - [4.3 Windsurf Setup](#43-windsurf-setup)
 - [5. Contributing](#5-contributing)
 - [6. TODOs](#6-todos)
 - [7. Why Use AI IDE Rules?](#7-why-use-ai-ide-rules)
@@ -181,7 +182,24 @@ Good scoping is crucial so you are not adding unnecessary context to the AI that
 3. Rules will be picked up automatically from `.cursor/rules/**`.
 4. You can manually reload them from the Cursor command palette: `⇧⌘P` → `Reload AI Rules`.
 
-### 4.2 Windsurf Setup
+
+### 4.2 Cursor Rule Modes
+
+Cursor supports 4 modes that determine when rules are loaded into the AI’s context:
+
+| Mode              | Frontmatter Setup                                           | When It's Injected                                      |
+|-------------------|-------------------------------------------------------------|---------------------------------------------------------|
+| **Always**        | `alwaysApply: true`, no globs or description                | Loaded at the start of **every** session                |
+| **Auto Attached** | `alwaysApply: false`, `globs: <pattern>`                    | Loaded when files matching the glob are **opened**      |
+| **Agent Requested** | `alwaysApply: false`, `description: "<…>"`, no globs       | Available for AI to **choose** based on description     |
+| **Manual**        | `alwaysApply: false`, no globs or description               | Only loaded when explicitly referenced (e.g. `@ruleName`) |
+
+---
+
+🔄 **Tip:** After editing an `.mdc` rule file, you must **restart or open a new chat session** for the changes to fully take effect.
+
+
+### 4.3 Windsurf Setup
 
 1. Clone this repository into your project.
 2. Ensure Windsurf is pointed to `.windsurf/rules/**` or compatible config.
