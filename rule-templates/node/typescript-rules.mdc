@@ -1,13 +1,11 @@
 ---
 description: Typescript rules for NodeJS 
 globs: 
+  - "*.ts"
 alwaysApply: false
 ---
 ---
-name: typescript-node-backend-best-practices
-description: Typescript rules for NodeJS
-globs: 
-  - "*.ts"
+
 # TypeScript Node.js Backend Rules
 
 - For functions with more than 3 arguments, define an interface for the parameters.
