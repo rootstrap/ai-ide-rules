@@ -1,5 +1,256 @@
 ---
-description:
-globs:
-alwaysApply: false
+description: 
+globs: 
+alwaysApply: true
 ---
+## Project Structure Standards
+
+### Directory Organization
+Organize code with the following structure:
+- `app/controllers/api/v1` for versioned API controllers
+- `app/models` for data models
+- `app/services` for business logic
+- `app/policies` for authorization rules
+- `app/serializers` for JSON response formatting
+- `app/jobs` for background processing with GoodJob
+- `app/forms` for form objects using YAAF
+- `app/decorators` for view-related logic using Draper
+
+### Code Quality Anti-patterns to Avoid
+- **Fat Models:** Models with too much business logic - move to service objects or POROs
+- **God Classes:** Classes doing too much - break into smaller, focused classes
+- **Duplicated Code:** Repeated code - follow DRY principle and extract to shared methods
+- **Long Methods:** Complex methods - break into smaller, focused methods
+- **Magic Numbers:** Hardcoded values - use constants or enums instead
+
+## API Conventions
+- Use versioning in URLs: `/api/v1/resource`
+- Maintain backward compatibility between versions
+- Use appropriate HTTP status codes
+- Keep consistent response format
+- Include relevant metadata in responses
+- Write tests for all API endpoints
+- Maintain high code coverage
+- Avoid using callbacks in models
+- Use namespaces for business areas (e.g., "payments")
+
+## Authentication & Authorization
+- Implement JWT authentication
+- Use Pundit for authorization policies
+- Keep authorization logic in policies
+- Each model should have its corresponding policy
+
+## Performance Optimization
+- Use database indexing effectively
+- Use ActiveRecord methods instead of raw SQL when possible
+- Avoid N+1 queries with `includes`, `preload`, or `eager_load`
+- Optimize queries using includes, joins, or select
+
+## Code Style and Documentation
+### Comments Guidelines
+- Write comments only when absolutely necessary
+- All comments must be in English
+- Use comments for complex business logic or non-obvious code
+
+### Documentation Standards
+- Keep project documentation up to date
+- Document all public APIs and interfaces
+- Update documentation with significant changes
+- Use clear and concise language
+
+### Language Requirements
+- All code-related communication in English
+- All AI assistant responses in Spanish
+
+### Security Practices
+- Follow security best practices
+- Follow principle of least privilege
+- Use environment variables for configuration
+
+## Development Workflow
+### Rails Generators
+Use appropriate generators:
+- `rails generate model` for new models
+- `rails generate migration` for database changes
+- `rails generate controller` for new controllers
+- `rails generate service` for new services
+- `rails generate policy` for new policies
+- `rails generate serializer` for new serializers
+- `rails generate job` for new background jobs
+- `rails generate form` for new form objects
+- `rails generate decorator` for new decorators
+
+### Setup Commands
+- Check Ruby version in `.ruby-version` before starting
+- Review `Gemfile` for required dependencies and gem versions
+- Run `bundle install` after Gemfile changes
+- Use `rails db:migrate` after creating migrations
+- Run `rails db:seed` to populate initial data if needed
+- Use I18n for translations
+
+## Migration Standards (Strong Migrations)
+
+### Naming Convention
+- Use descriptive names: `YYYYMMDDHHMMSS_descriptive_name.rb`
+
+### Safe Operations Examples
+
+#### Adding Columns
+```ruby
+# Safe - with default value
+add_column :users, :email, :string, null: false, default: ''
+
+# Unsafe - requires backfill
+add_column :users, :email, :string, null: false
+```
+
+#### Adding Indexes
+```ruby
+# Safe - concurrent
+add_index :users, :email, algorithm: :concurrently
+
+# Unsafe - blocking
+add_index :users, :email
+```
+
+#### Adding Foreign Keys
+```ruby
+# Safe - concurrent
+add_foreign_key :products, :users, algorithm: :concurrently
+
+# Unsafe - blocking
+add_foreign_key :products, :users
+```
+
+### Migration Best Practices
+1. **Safe Operations**
+   - Use `algorithm: :concurrently` for indexes
+   - Use `algorithm: :concurrently` for foreign keys
+   - Always provide default values for `null: false` columns
+
+2. **Avoid These Operations**
+   - Changing column types
+   - Removing columns
+   - Renaming columns
+   - Adding non-concurrent indexes
+   - Adding non-concurrent foreign keys
+
+3. **Data Migrations**
+   - Use `say_with_time` for feedback
+   - Use `find_each` for batches
+   - Make migrations reversible
+
+## Testing Standards
+
+### Directory Structure
+Organize tests in appropriate directories:
+- `spec/models/` for models
+- `spec/controllers/` for controllers
+- `spec/requests/` for APIs
+- `spec/features/` for end-to-end tests
+
+### Test Structure Template
+```ruby
+describe ModelName do
+  describe 'validations' do
+    subject { build(:model_name) }
+    # validations
+  end
+
+  describe 'methods' do
+    context 'when condition' do
+      let(:object) { create(:model_name) }
+      # method tests
+    end
+  end
+end
+```
+
+### Testing Best Practices
+1. Use descriptive test names
+2. Follow Arrange-Act-Assert pattern:
+   - Arrange: Set up data
+   - Act: Execute action
+   - Assert: Verify result
+3. Use factories for test data
+4. Use `let` for lazy-loaded data
+5. Use `let!` when data is needed for setup
+
+### Factory Template
+```ruby
+FactoryBot.define do
+  factory :model_name do
+    sequence(:email) { |n| "user#{n}@example.com" }
+
+    trait :with_optional do
+      # optional attributes
+    end
+  end
+end
+```
+
+## Examples
+### Controller Example
+```ruby
+class Api::V1::UsersController < ApplicationController
+  before_action :authenticate_user!
+  before_action :set_user, only: [:show, :update, :destroy]
+
+  def index
+    @users = policy_scope(User).includes(:profile)
+    render json: UserSerializer.new(@users).serializable_hash
+  end
+
+  def show
+    authorize @user
+    render json: UserSerializer.new(@user).serializable_hash
+  end
+
+  private
+
+  def set_user
+    @user = User.find(params[:id])
+  end
+end
+```
+
+### Service Object Example
+```ruby
+class UserRegistrationService
+  def initialize(user_params)
+    @user_params = user_params
+  end
+
+  def call
+    user = User.new(@user_params)
+
+    if user.save
+      UserMailer.welcome_email(user).deliver_later
+      { success: true, user: user }
+    else
+      { success: false, errors: user.errors }
+    end
+  end
+end
+```
+
+### Policy Example
+```ruby
+class UserPolicy < ApplicationPolicy
+  def index?
+    user.admin?
+  end
+
+  def show?
+    user.admin? || record == user
+  end
+
+  def update?
+    user.admin? || record == user
+  end
+
+  def destroy?
+    user.admin?
+  end
+end
+```
