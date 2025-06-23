@@ -1,7 +1,7 @@
 ---
 description: NestJS rules
 globs: *.ts
-alwaysApply: true
+alwaysApply:
 ---
 
 # Nestjs rules
