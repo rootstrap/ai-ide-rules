@@ -4,7 +4,6 @@ globs:
   - "*.ts"
 alwaysApply: false
 ---
----
 
 # TypeScript Node.js Backend Rules
 
