@@ -23,19 +23,24 @@ Organize code with the following structure:
 - **Long Methods:** Complex methods - break into smaller, focused methods
 - **Magic Numbers:** Hardcoded values - use constants or enums instead
 
+## General Development Practices
+
+- Maintain high code coverage
+- Write tests for all API endpoints
+- Avoid using callbacks in models
+- Use namespaces for business areas (e.g., `payments`, `admin`)
+- Use I18n for translations
+
 ## API Conventions
 - Use versioning in URLs: `/api/v1/resource`
 - Maintain backward compatibility between versions
 - Use appropriate HTTP status codes
 - Keep consistent response format
 - Include relevant metadata in responses
-- Write tests for all API endpoints
-- Maintain high code coverage
-- Avoid using callbacks in models
-- Use namespaces for business areas (e.g., "payments")
+- Write request specs for all API endpoints
+- Follow RESTful principles: use standard HTTP methods (GET, POST, PUT/PATCH, DELETE) for CRUD actions, plural nouns in paths, avoid verbs in routes, and ensure statelessness
 
 ## Authentication & Authorization
-- Implement JWT authentication
 - Use Pundit for authorization policies
 - Keep authorization logic in policies
 - Each model should have its corresponding policy
@@ -52,20 +57,16 @@ Organize code with the following structure:
 - All comments must be in English
 - Use comments for complex business logic or non-obvious code
 
-### Documentation Standards
-- Keep project documentation up to date
-- Document all public APIs and interfaces
-- Update documentation with significant changes
-- Use clear and concise language
 
 ### Language Requirements
 - All code-related communication in English
-- All AI assistant responses in Spanish
+
 
 ### Security Practices
 - Follow security best practices
 - Follow principle of least privilege
 - Use environment variables for configuration
+- Don't add to the codebase any secret
 
 ## Development Workflow
 ### Rails Generators
@@ -73,12 +74,9 @@ Use appropriate generators:
 - `rails generate model` for new models
 - `rails generate migration` for database changes
 - `rails generate controller` for new controllers
-- `rails generate service` for new services
 - `rails generate policy` for new policies
-- `rails generate serializer` for new serializers
 - `rails generate job` for new background jobs
-- `rails generate form` for new form objects
-- `rails generate decorator` for new decorators
+
 
 ### Setup Commands
 - Check Ruby version in `.ruby-version` before starting
@@ -86,12 +84,8 @@ Use appropriate generators:
 - Run `bundle install` after Gemfile changes
 - Use `rails db:migrate` after creating migrations
 - Run `rails db:seed` to populate initial data if needed
-- Use I18n for translations
 
 ## Migration Standards (Strong Migrations)
-
-### Naming Convention
-- Use descriptive names: `YYYYMMDDHHMMSS_descriptive_name.rb`
 
 ### Safe Operations Examples
 
@@ -145,9 +139,15 @@ add_foreign_key :products, :users
 ### Directory Structure
 Organize tests in appropriate directories:
 - `spec/models/` for models
-- `spec/controllers/` for controllers
-- `spec/requests/` for APIs
-- `spec/features/` for end-to-end tests
+- `spec/requests/` for API request
+- `spec/services/` for service objects
+- `spec/presenters/` for presenter objects
+- `spec/policies/` for authorization policies (e.g., Pundit)
+- `spec/serializers/` for serializers
+- `spec/jobs/` for background jobs
+
+
+
 
 ### Test Structure Template
 ```ruby
@@ -175,8 +175,10 @@ end
 3. Use factories for test data
 4. Use `let` for lazy-loaded data
 5. Use `let!` when data is needed for setup
+6. Use Faker only within factories.
 
 ### Factory Template
+
 ```ruby
 FactoryBot.define do
   factory :model_name do
