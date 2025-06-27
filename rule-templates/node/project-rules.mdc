@@ -1,0 +1,42 @@
+---
+description: "Project specific best practices, versioning and configurable guidelines."
+globs:
+alwaysApply: true
+---
+# versioning
+- Node.js version must be x.y.z
+- NestJS version must be x.y.z
+- NPM version must be x.y.z
+- pnpm version must be x.y.z
+- Yarn version must be x.y.z (if used)
+- TypeScript version must be x.y.z
+- Jest version must be x.y.z
+- ESLint version must be x.y.z
+- Prettier version must be x.y.z
+- Husky version must be x.y.z (if used)
+- Docker version must be x.y.z
+- Docker Compose version must be x.y.z
+- PostgreSQL version must be x.y.z
+- TypeORM version must be x.y.z
+- Swagger/OpenAPI version must be x.y.z
+- Cypress version must be x.y.z (if used)
+- Supertest version must be x.y.z (if used)
+
+# coverage
+- Minimum code coverage for unit tests must be x%
+
+# performance
+- Maximum API response time must be x ms
+
+---
+# branching
+- Require x code reviews before merge
+---
+
+# release
+- Release frequency must be at least x per sprint
+- All releases must be documented in CHANGELOG.md
+
+# documentation
+- README must be updated with every major/minor/patch release
+- API docs must be regenerated with every endpoint change
