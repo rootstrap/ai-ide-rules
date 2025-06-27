@@ -7,6 +7,7 @@ alwaysApply: true
 - Node.js version must be x.y.z
 - NestJS version must be x.y.z
 - NPM version must be x.y.z
+- pnpm version must be x.y.z
 - Yarn version must be x.y.z (if used)
 - TypeScript version must be x.y.z
 - Jest version must be x.y.z

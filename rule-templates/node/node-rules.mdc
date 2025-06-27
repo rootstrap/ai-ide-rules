@@ -11,10 +11,12 @@ alwaysApply: true
 - Docker Compose for orchestration
 - Jest for testing
 - ESLint for code quality
+- Prettier for code formatting
 
 # coding_practices
 - Follow ESLint rules (eslint.config.mjs)
-- Avoid using `any` type to maintain type safety
+- Follow Prettier config (.prettierc)
+- Avoid using `any` type to maintain type safety. If strictly needed use `unknown` instead
 - Use bcrypt for password hashing to ensure secure password storage
 - Use structured logging instead of `console.log` statements
 - Implement proper error handling in async functions using try/catch blocks
@@ -29,6 +31,7 @@ alwaysApply: true
 - Use `beforeEach`/`afterEach` hooks for consistent test setup and cleanup
 - Define mocks in `beforeAll` or `beforeEach` hooks to avoid repetition
 - Extract complex mocks into separate files for reusability
+- Use describe.each() blocks whenever possible to avoid code duplication and improve test clarity and maintainability.
 
 # documentation_practices
 - Add JSDoc comments with examples for complex functions
