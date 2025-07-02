@@ -1,0 +1,132 @@
+---
+description: NestJS rules
+globs: *.ts
+alwaysApply: false
+---
+
+# Nestjs rules
+
+## Project Structure and Organization
+
+- **Respect the official NestJS folder structure**
+Use a modular structure with clearly separated directories:
+```
+    /modules
+    /controllers
+    /services
+    /dto
+    /entities
+    /guards
+    /interceptors
+    /pipes
+    /config
+    /shared
+    /models
+    /repositories
+    /constants
+    /decorators
+    /tests
+```
+
+- **Controllers should remain thin**  
+Move business logic to services. Controllers should only handle routing, delegation, and validation.
+
+- **Use services for business logic**  
+Keep services responsible for core logic. Services should be `@Injectable()` and unit testable.
+
+- **Leverage SharedModule**  
+Extract repeated logic into shared modules and avoid duplication across features.
+
+## DTOs, Validation, and Interfaces
+
+- **Always use DTOs with `class-validator`**  
+Validate inputs using DTOs and enable `ValidationPipe` with `whitelist: true` and `forbidNonWhitelisted: true`.
+
+- **Every inbound payload must go through a DTO**  
+Annotate DTOs with appropriate decorators like `@IsString()`, `@IsOptional()`, etc.
+
+- **Define clear interfaces or types for response models**  
+Never return raw entities or mixed types from your APIs.
+
+- **Never use `any` or `unknown` without clear justification**  
+Favor precise typing using TypeScript interfaces, DTOs, and enums.
+
+## Dependency Injection and Module System
+
+- **Register providers and modules explicitly**  
+Avoid implicit or automatic bindings — define them clearly in each `@Module`.
+
+- **Use NestJS's dependency injection system**  
+Inject services via constructors. Avoid global state or service locators.
+
+- **Use `@nestjs/config`**  
+Centralize and validate environment configurations through this package.
+
+- **Stick to consistent naming conventions**  
+- `PascalCase` for classes and enums  
+- `camelCase` for variables and functions  
+- `UPPER_SNAKE_CASE` for environment variable keys or constant values
+
+## Security and Guards
+
+- **Use `@UseGuards()` for auth/authz logic**  
+Never implement role or permission checks directly inside controllers or services.
+
+- **Avoid putting business logic in middleware**  
+Middleware should only handle transformation or request enrichment, not decision-making.
+
+- **Use `@UseInterceptors()` for cross-cutting concerns**  
+Like logging, response mapping, and timing.
+
+## Enums and State Management
+
+- **Use `enum`s instead of magic strings or hardcoded values**  
+Centralize state definitions using enums or constants.
+
+## Testing Practices
+
+- **Use `jest` for unit and integration testing**  
+Maintain consistency with test structure and naming.
+
+- **Use `faker` for generating test data**  
+Avoid hardcoded mock values; generate realistic fixtures.
+
+- **Follow the Given/When/Then pattern**  
+Improve test readability and behavior clarity.
+
+- **Use `beforeEach`/`afterEach` for setup and teardown**  
+Maintain test isolation.
+
+- **Only one assertion per test block (`it`, `test`)**
+To mantain the test's purpose clear
+
+- **Mirror test file structure to the main source files**  
+Keep tests colocated or in a `__tests__` directory matching the app layout.
+
+## Import and Module Preferences
+
+- **Prefer `@nestjs/*` modules over custom utilities**  
+Use built-in NestJS features unless there's a strong reason not to.
+
+- **Use built-in Pipes, Guards, and Interceptors where possible**  
+Only create custom logic if built-in solutions don’t fit your needs.
+
+## API Documentation Practices
+
+- **Use Swagger decorators to document API endpoints**
+Use the `@nestjs/swagger` package to provide automatic OpenAPI documentation.
+
+- **Use `@ApiTags()`, `@ApiOperation()`, and `@ApiResponse()`**
+These decorators help categorize and describe endopoints clearly for developers and consumers.
+
+- **Include request and response examples**
+Whenever applicable, add examples using `@ApiBody()`, `@ApiResponse({ examples: ... })`.
+
+- **Use `@ApiProperty()` on all DTO fields**
+Annotate every property in your DTOs with @ApiProperty() to ensure they are included in the Swagger schema.
+
+- **Use `@Type(() => Class)` from `class-transformer` for nested DTOs**
+This allows Swagger and validation to correctly infer and render nested objects.
+
+- **Keep Swagger documentation in sync**
+Update annotations and examples as endpoints or DTOs changes.
