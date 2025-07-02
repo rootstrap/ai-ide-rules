@@ -1,7 +1,7 @@
 ---
 description: NestJS rules
 globs: *.ts
-alwaysApply:
+alwaysApply: false
 ---
 
 # Nestjs rules
@@ -65,7 +65,7 @@ Centralize and validate environment configurations through this package.
 - **Stick to consistent naming conventions**  
 - `PascalCase` for classes and enums  
 - `camelCase` for variables and functions  
-- `UPPER_SNAKE_CASE` for environment variable keys
+- `UPPER_SNAKE_CASE` for environment variable keys or constant values
 
 ## Security and Guards
 
@@ -97,6 +97,9 @@ Improve test readability and behavior clarity.
 - **Use `beforeEach`/`afterEach` for setup and teardown**  
 Maintain test isolation.
 
+- **Only one assertion per test block (`it`, `test`)**
+To mantain the test's purpose clear
+
 - **Mirror test file structure to the main source files**  
 Keep tests colocated or in a `__tests__` directory matching the app layout.
 
@@ -118,6 +121,12 @@ These decorators help categorize and describe endopoints clearly for developers 
 
 - **Include request and response examples**
 Whenever applicable, add examples using `@ApiBody()`, `@ApiResponse({ examples: ... })`.
+
+- **Use `@ApiProperty()` on all DTO fields**
+Annotate every property in your DTOs with @ApiProperty() to ensure they are included in the Swagger schema.
+
+- **Use `@Type(() => Class)` from `class-transformer` for nested DTOs**
+This allows Swagger and validation to correctly infer and render nested objects.
 
 - **Keep Swagger documentation in sync**
 Update annotations and examples as endpoints or DTOs changes.
